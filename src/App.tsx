@@ -68,16 +68,20 @@ export default function App() {
       
       const data = await response.json();
       
+      if (!response.ok) {
+        throw new Error(data.message || 'Erro ao processar mensagem');
+      }
+      
       setMessages(prev => [...prev, { 
         role: 'model', 
         content: data.response, 
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) 
       }]);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error sending message:', error);
       setMessages(prev => [...prev, { 
         role: 'model', 
-        content: 'Desculpe, ocorreu um erro ao processar sua mensagem.', 
+        content: error.message || 'Desculpe, ocorreu um erro ao processar sua mensagem.', 
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) 
       }]);
     } finally {
