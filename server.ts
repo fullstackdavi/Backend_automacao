@@ -3,6 +3,10 @@ import { createServer as createViteServer } from 'vite';
 import { GoogleGenAI, ThinkingLevel } from '@google/genai';
 import path from 'path';
 import cors from 'cors';
+import dotenv from 'dotenv';
+
+// Load environment variables from .env file if present
+dotenv.config();
 
 async function startServer() {
   const app = express();
@@ -13,7 +17,12 @@ async function startServer() {
   app.use(cors());
   app.use(express.json());
 
-  const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey || apiKey === 'MY_GEMINI_API_KEY') {
+    console.warn('WARNING: GEMINI_API_KEY is not set or is invalid. Please configure it.');
+  }
+
+  const ai = new GoogleGenAI({ apiKey: apiKey });
 
   // In-memory store for messages
   const messages: { role: 'user' | 'model', content: string }[] = [];
