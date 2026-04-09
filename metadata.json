@@ -1,0 +1,5 @@
+{
+  "name": "Gemini Backend API",
+  "description": "A backend service exposing endpoints to send and receive messages using Gemini 3 Flash Preview.",
+  "requestFramePermissions": []
+}
